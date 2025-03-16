@@ -1,0 +1,70 @@
+#Os comentários durante a criação do arquivo servem apenas para fixação de estudo.
+#Eles serão realocados para um arquivo de notas separado depois.
+services:
+  postgres:
+    container_name: ms-pg-sql #Pra facilitar a leitura do container no terminal
+    image: postgres:14 #Versão que eu encontrei no Docker hub, mas pode deixar somente postgres aqui que não tem problema.
+    environment:
+      POSTGRES_USER: wallace
+      POSTGRES_PASSWORD: passwd
+      PG_DATA: /var/lib/postgresql/data #Os dados do banco ficarão armazenados aqui dentro do container. Isso será mantido atraves de um volume.
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      microservices-net:
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: ms_pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@pgadmin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PG_ADMIN_SERVER_MODE: "False"
+    ports:
+      - 5050:80 #Em local, ouvirá na porta 5050. No docker, ouvirá na porta 80.
+    depends_on:
+      - postgres
+    networks:
+      - microservices-net
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    restart: unless-stopped
+
+  mongodb:
+    container_name: ms_mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: wallace
+      MONGO_INITDB_ROOT_PASSWORD: pwd
+  mongo-express:
+    container_name: ms_mongo_express
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: wallace
+      ME_CONFIG_MONGODB_ADMINPASSWORD: pwd
+      ME_CONFIG_MONGODB_SERVER: mongodb
+  
+  mail-dev:
+    container_name: ms_mail_dev
+    image: maildev/maildev
+    ports:
+      - 1025:1025
+      - 1080:1080
+
+networks:
+  microservices-net:
+    driver: bridge
+volumes:
+  postgres:
+  pgadmin:
+  mongo:
