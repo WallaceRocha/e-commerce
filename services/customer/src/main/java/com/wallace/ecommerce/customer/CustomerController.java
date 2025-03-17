@@ -29,34 +29,34 @@ public class CustomerController implements ICustomerController{
 
     private final CustomerService service;
 
-    @PostMapping
-    public ResponseEntity<String> createCustomer(@RequestBody @Valid CustomerRequest request) {
+    @Override
+    public ResponseEntity<String> createCustomer(CustomerRequest request) {
         return ResponseEntity.ok(service.create(request));
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateCustomer(@RequestBody @Valid CustomerRequest request) {
+    @Override
+    public ResponseEntity<Void> updateCustomer(CustomerRequest request) {
         service.update(request);
         return ResponseEntity.accepted().build();
     }
 
-    @GetMapping
+    @Override
     public ResponseEntity<List<CustomerResponse>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/exists/{customer-id}")
-    public ResponseEntity<Boolean> existsById(@PathVariable("customer-id") String customerId) {
+    @Override
+    public ResponseEntity<Boolean> existsById(String customerId) {
         return ResponseEntity.ok(service.existsById(customerId));
     }
 
-    @GetMapping("/{customer-id}")
-    public ResponseEntity<CustomerResponse> findById(@PathVariable("customer-id") String customerId) {
+    @Override
+    public ResponseEntity<CustomerResponse> findById(String customerId) {
         return ResponseEntity.ok(service.findById(customerId));
     }
 
-    @DeleteMapping("/{customer-id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable("customer-id") String customerId) {
+    @Override
+    public ResponseEntity<Void> deleteCustomer(String customerId) {
         service.delete(customerId);
         return ResponseEntity.accepted().build();
     }
