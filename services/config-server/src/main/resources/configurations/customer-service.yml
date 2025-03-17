@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: customer
+      username: wallace
+      password: pwd
+      authentication-database: admin
+springdoc:
+  api-docs:
+    path: /api-docs  # Este deve ser o endpoint para o JSON do OpenAPI
+  swagger-ui:
+    path: /swagger-ui.html # Este deve ser o endpoint para a UI do Swagger
+server:
+  port: 8082

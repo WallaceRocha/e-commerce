@@ -1,0 +1,6 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888 # importar as configurações adicionadas no config server para este serviço
+  application:
+    name: customer-service
+
