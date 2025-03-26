@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/customers")
 @RequiredArgsConstructor
-public class CustomerController implements ICustomerController{
+public class CustomerController implements ICustomerController {
 
     private final CustomerService service;
 
